@@ -1,7 +1,6 @@
 {
-  "name": "CODEified",
-  "version": "1.0.0",
-  "description": "Blockchain Based Decentralized Democratic Governance Through Transparent and Automated Aggregation of Individually CODEified Constitutions",
+  "name": "nomad-house",
+  "version": "0.0.1",
   "author": "Matthew Keil",
   "scripts": {
     "start": "cross-env NODE_ENV=development nuxt-ts",
