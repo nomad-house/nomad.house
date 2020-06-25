@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: matthewkeil/CODEified
+  repo: nomad-house/nomad.house
   branch: master
   site_domain: codeified.org
   base_url: https://nomad-devops.nomad.house/v1
@@ -9,39 +9,69 @@ local_backend: true
 publish_mode: editorial_workflow
 media_folder: '@/static/media'
 public_folder: '@/static/media'
-site_url: https://www.codeified.org
+site_url: https://nomad.house
 collections:
+  - name: authors
+    label: Authors
+    folder: assets/content/authors
+    format: json
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - { name: name, label: Name, widget: string, required: true }
+      - {
+          name: description,
+          label: Description,
+          widget: markdown,
+          required: false,
+          hint: The authors bio,
+        }
   - name: categories
     label: Categories
     folder: assets/content/categories
+    format: json
     create: true
     slug: '{{slug}}'
     identified_field: name
     fields:
-      - { label: Name, name: name, widget: string }
+      - { name: name, label: Name, widget: string, required: true }
       - {
-          label: Description,
           name: description,
+          label: Description,
           widget: markdown,
           required: false,
+          hint: The authors bio,
         }
   - name: posts
     label: Posts
     folder: assets/content/posts
+    format: json
     preview_path: '{{slug}}'
     slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
     create: true
     fields:
-      - { name: title, label: Title, widget: string }
+      - { name: title, label: Title, widget: string, required: true }
       - { name: subtitle, label: Subtitle, widget: string, required: false }
-      - { name: author, label: Author, widget: string }
-      - { name: hero, lable: Hero Image, widget: image }
+      - { name: hero, lable: Hero Image, widget: image, require: true }
       - {
-          name: prominent,
-          label: Prominent,
-          widget: boolean,
-          default: false,
-          required: false,
+          name: author,
+          label: Author,
+          widget: relation,
+          required: true,
+          collection: authors,
+          valueField: slug,
+          searchFields: [name],
+          displayFields: [name],
+        }
+      - {
+          name: category,
+          label: Category,
+          widget: relation,
+          multiple: true,
+          collection: categories,
+          valueField: name,
+          searchFields: [name],
+          displayFields: [name],
         }
       - {
           name: published,
@@ -55,47 +85,13 @@ collections:
           label: Updated Date,
           widget: datetime,
           default: true,
+          required: false,
+        }
+      - {
+          name: prominent,
+          label: Prominent,
+          widget: boolean,
+          default: false,
           required: false,
         }
       - { name: body, label: Body, widget: markdown }
-      - {
-          label: Category,
-          name: category,
-          widget: relation,
-          collection: categories,
-          searchFields: [name],
-          valueField: name,
-          multiple: true,
-        }
-  - name: recipes
-    label: Recipes
-    folder: assets/content/recipes
-    preview_path: '{{slug}}'
-    slug: '{{slug}}'
-    create: true
-    fields:
-      - { name: title, label: Title, widget: string }
-      - { name: subtitle, label: Subtitle, widget: string, required: false }
-      - { name: author, label: Author, widget: string }
-      - { name: hero, lable: Hero Image, widget: image }
-      - {
-          name: prominent,
-          label: Prominent,
-          widget: boolean,
-          default: false,
-          required: false,
-        }
-      - {
-          name: published,
-          label: Publish Date,
-          widget: datetime,
-          default: true,
-          required: true,
-        }
-      - {
-          name: updated,
-          label: Updated Date,
-          widget: datetime,
-          default: true,
-          required: false,
-        }

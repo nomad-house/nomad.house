@@ -8,6 +8,7 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
   @Prop({ default: '72px' }) height!: string
   @Prop({ default: '100vh' }) heroHeight!: string
   @Prop() scrollInfo!: ScrollInfo
+  @Prop({ default: 'transparent', required: false }) startColor!: string
   @Watch('scrollInfo')
   onScrollInfo() {
     if (this.$refs.positioning) {
@@ -22,7 +23,7 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
   private fixed = false
 
   private get color(): 'default' | 'transparent' | string {
-    return this.scrollInfo.position > 5 ? 'white' : 'transparent'
+    return this.scrollInfo.position > 5 ? 'white' : this.startColor
   }
 
   private get drawerOpen() {

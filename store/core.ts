@@ -51,7 +51,7 @@ export const actions = actionTree(
       )
       commit(
         'setLinks',
-        blog.categories.slice(0, 4).map((category) => ({
+        blog.topCategories.map((category) => ({
           text: category,
           href: `/${category.toLowerCase()}`,
           to: `/${category.toLowerCase()}`

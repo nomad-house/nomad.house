@@ -5,5 +5,5 @@ export default class CardLayout extends Vue {}
 </script>
 
 <template>
-  <base-layout />
+  <base-layout hero-height="30vh" toolbar-start-color="white" />
 </template>
