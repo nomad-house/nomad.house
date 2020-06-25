@@ -14,7 +14,6 @@ collections:
   - name: authors
     label: Authors
     folder: assets/content/authors
-    format: json
     create: true
     slug: '{{slug}}'
     fields:
@@ -29,7 +28,6 @@ collections:
   - name: categories
     label: Categories
     folder: assets/content/categories
-    format: json
     create: true
     slug: '{{slug}}'
     identified_field: name
@@ -40,12 +38,11 @@ collections:
           label: Description,
           widget: markdown,
           required: false,
-          hint: The authors bio,
+          hint: A bit about the category,
         }
   - name: posts
     label: Posts
     folder: assets/content/posts
-    format: json
     preview_path: '{{slug}}'
     slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
     create: true
@@ -94,4 +91,4 @@ collections:
           default: false,
           required: false,
         }
-      - { name: body, label: Body, widget: markdown }
+      - { name: body, label: Body, widget: markdown, required: true }

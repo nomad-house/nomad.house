@@ -1,32 +1,51 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import { Post, Author, Category } from '../../store/blog'
+import { FrontMatter } from '../../store'
 
 @Component({
   layout: 'card',
-  async asyncData({ params }): Promise<Post> {
-    const post: Post = await import(
-      `@/assets/content/posts/${params.slug}.json`
+  data: () => ({
+    title: '',
+    author: {},
+    category: [],
+    hero: '',
+    published: '',
+    body: undefined
+  }),
+  async created(this: BlogPost) {
+    const post: FrontMatter<Post> = await import(
+      `@/assets/content/posts/${this.$route.params.slug}.md`
     )
-    return post
+    this.title = post.attributes.title
+    this.subtitle = post.attributes.subtitle
+    this.author = post.attributes.author
+    this.category = post.attributes.category
+    this.hero = post.attributes.hero
+    this.published = post.attributes.published
+    this.updated = post.attributes.updated
+    this.prominent = post.attributes.prominent
+    this.body = post.vue.component
   }
 })
 export default class BlogPost extends Vue implements Post {
-  readonly title!: string
-  readonly subtitle!: string
-  readonly hero!: string
-  readonly author!: Author
-  readonly category?: Category[]
-  readonly prominent?: boolean
-  readonly published!: Date
-  readonly updated?: Date
-  readonly body!: InstanceType<typeof Vue>
+  title!: string
+  subtitle?: string
+  author!: Author
+  category!: Category[]
+  hero!: string
+  published!: Date
+  updated?: Date
+  prominent?: boolean
+  body?: InstanceType<typeof Vue> = undefined
 }
 </script>
 
 <template>
   <div class="feed-container">
-    <v-container pt-0 pb-0 pl-4 pr-4> Recipe goes here</v-container>
+    <v-container v-if="!!body" pt-0 pb-1 pl-4 pr-4>
+      <component :is="body" />
+    </v-container>
   </div>
 </template>
 

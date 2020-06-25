@@ -4,26 +4,26 @@ import { mutationTree, getterTree } from 'nuxt-typed-vuex'
 export const namespaced = true
 
 export interface Post {
-  readonly title: string
-  readonly subtitle: string
-  readonly hero: string
-  readonly author: Author
-  readonly category?: Category[]
-  readonly prominent?: boolean
-  readonly published: Date
-  readonly updated?: Date
-  readonly body: InstanceType<typeof Vue>
+  title: string
+  subtitle?: string
+  author: Author
+  category: Category[]
+  hero: string
+  published: Date
+  updated?: Date
+  prominent?: boolean
+  mbBody?: InstanceType<typeof Vue>
 }
 
 export interface Category {
-  readonly name: string
-  readonly slug: string
-  readonly description?: InstanceType<typeof Vue>
+  name: string
+  slug: string
+  body?: InstanceType<typeof Vue>
 }
 export interface Author {
-  readonly name: string
-  readonly slug: string
-  readonly description?: InstanceType<typeof Vue>
+  name: string
+  slug: string
+  body?: InstanceType<typeof Vue>
 }
 
 export const state = () => ({
