@@ -16,36 +16,109 @@ collections:
     folder: assets/content/authors
     create: true
     slug: '{{slug}}'
+    identified_field: name
     fields:
-      - { name: name, label: Name, widget: string, required: true }
-      - {
-          name: description,
-          label: Description,
-          widget: markdown,
-          required: false,
-          hint: The authors bio,
-        }
+      - name: name
+        label: Name
+        widget: string
+        required: true
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: The authors bio
   - name: categories
     label: Categories
+    label_singular: Category
     folder: assets/content/categories
     create: true
     slug: '{{slug}}'
     identified_field: name
     fields:
-      - { name: name, label: Name, widget: string, required: true }
-      - {
-          name: description,
-          label: Description,
-          widget: markdown,
-          required: false,
-          hint: A bit about the category,
-        }
+      - name: name
+        label: Name
+        widget: string
+        required: true
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the category
+  - name: tags
+    label: Tags
+    folder: assets/content/tags
+    create: true
+    slug: '{{slug}}'
+    identified_field: name
+    fields:
+      - name: name
+        label: Name
+        widget: string
+        required: true
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the tag
+  - name: recipes
+    label: recipes
+    folder: assets/content/recipes
+    create: true
+    preview_path: '{{slug}}'
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subtitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: hero
+        lable: Hero Image
+        widget: image
+        require: true
+      - name: author
+        label: Author
+        widget: relation
+        required: true
+        collection: authors
+        valueField: slug
+        searchFields: [name]
+        displayFields: [name]
+      - name: category
+        label: Category
+        widget: relation
+        multiple: true
+        collection: categories
+        valueField: name
+        searchFields: [name]
+        displayFields: [name]
+      - name: published
+        label: Publish Date
+        widget: datetime
+        default: true
+        required: true
+      - name: updated
+        label: Updated Date
+        widget: datetime
+        required: false
+      - name: ingredients
+        label: Ingredients
+        widget: list
+        required: true
+        fields:
+          - { name: tile
+              label: Title, widget: string, required: true }
+  #   - { name: title, label: Title, widget: string, required: true }
+  #   - { name: subtitle, label: Subtitle, widget: string, required: false }
   - name: posts
     label: Posts
     folder: assets/content/posts
-    preview_path: '{{slug}}'
-    slug: '{{year}}-{{month}}-{{day}}-{{slug}}'
     create: true
+    preview_path: '{{slug}}'
+    slug: '{{slug}}'
     fields:
       - { name: title, label: Title, widget: string, required: true }
       - { name: subtitle, label: Subtitle, widget: string, required: false }

@@ -17,14 +17,7 @@ import { FrontMatter } from '../../store'
     const post: FrontMatter<Post> = await import(
       `@/assets/content/posts/${this.$route.params.slug}.md`
     )
-    this.title = post.attributes.title
-    this.subtitle = post.attributes.subtitle
-    this.author = post.attributes.author
-    this.category = post.attributes.category
-    this.hero = post.attributes.hero
-    this.published = post.attributes.published
-    this.updated = post.attributes.updated
-    this.prominent = post.attributes.prominent
+    Object.assign(this, post.attributes)
     this.body = post.vue.component
   }
 })

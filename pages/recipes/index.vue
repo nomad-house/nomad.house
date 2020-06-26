@@ -2,7 +2,6 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({
-  layout: 'card',
   components: {
     BlogFeed: () => import('@/components/blog/feed/BlogFeed.vue'),
     BlogAside: () => import('@/components/blog/aside/BlogAside.vue')
@@ -14,7 +13,8 @@ export default class BlogPage extends Vue {}
 <template>
   <div class="feed-container">
     <v-container pt-0 pb-0 pl-4 pr-4>
-      Recipe goes here
+      <blog-feed :bind="$attrs" />
+      <blog-aside />
     </v-container>
   </div>
 </template>
