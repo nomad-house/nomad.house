@@ -1,26 +1,24 @@
 <script lang="ts">
 import { Component, Mixins, Prop } from 'vue-property-decorator'
-import { ScrollInfo, Positioning } from '@/components/mixins/Positioning'
-@Component({
-  components: {
-    HeroBanner: () => import('@/components/HeroBanner.vue')
-  }
-})
+import {
+  ScrollInfo,
+  Positioning,
+  defaultScrollInfo
+} from '@/components/mixins/Positioning'
+@Component({})
 export default class Layout extends Mixins(Positioning) {
   @Prop({ default: '100vh', required: false }) heroHeight!: string
+  @Prop({ default: 0, required: false }) resetHeight!: number
   @Prop({ default: 'transparent', required: false }) toolbarStartColor!: string
 
-  private scrollInfo: ScrollInfo = { position: 0, direction: 'down' }
+  private scrollInfo: ScrollInfo = defaultScrollInfo
   private height = '72px'
-  private resetHeight = 0
+
   created() {
     this.$on('scroll', (scrollInfo: ScrollInfo) => {
       this.scrollInfo = scrollInfo
+      this.$emit('scroll', scrollInfo)
     })
-  }
-
-  mouted() {
-    this.resetHeight = (this.$refs.hero as Element).clientHeight
   }
 
   beforeDestroy() {
@@ -64,6 +62,9 @@ export default class Layout extends Mixins(Positioning) {
 </style>
 
 <style lang="scss" scoped>
+.relative {
+  position: relative;
+}
 .hero-container {
   position: fixed;
   z-index: 0;
@@ -73,8 +74,5 @@ export default class Layout extends Mixins(Positioning) {
   background-attachment: fixed;
   background-position: center;
   background-size: cover;
-}
-.relative {
-  position: relative;
 }
 </style>

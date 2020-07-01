@@ -2,13 +2,17 @@
 import { Watch, Prop, Component, Mixins } from 'vue-property-decorator'
 import { Positioning, ScrollInfo } from '../mixins/Positioning'
 import { Resize } from '../mixins/Resize'
+import HamburgerIcon from './HamburgerIcon.vue'
 
-@Component({})
+@Component({
+  components: {
+    HamburgerIcon
+  }
+})
 export default class Toolbar extends Mixins(Positioning, Resize) {
-  @Prop({ default: '72px' }) height!: string
   @Prop({ default: '100vh' }) heroHeight!: string
-  @Prop() scrollInfo!: ScrollInfo
   @Prop({ default: 'transparent', required: false }) startColor!: string
+  @Prop() scrollInfo!: ScrollInfo
   @Watch('scrollInfo')
   onScrollInfo() {
     if (this.$refs.positioning) {
@@ -18,33 +22,42 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
     }
   }
 
-  private maxWidth: string = '100%'
-  private offsetHeight = `calc(${this.heroHeight} - ${this.height})`
-  private fixed = false
+  height = 0
+  maxWidth = '100%'
+  fixed = false
 
-  private get color(): 'default' | 'transparent' | string {
+  get offsetHeight() {
+    return `calc(${this.heroHeight} - ${this.height}px)`
+  }
+
+  get color(): 'default' | 'transparent' | string {
     return this.scrollInfo.position > 5 ? 'white' : this.startColor
   }
 
-  private get drawerOpen() {
+  get drawerOpen() {
     return this.$vuex.core.drawerOpen
   }
 
-  private get links() {
+  get links() {
     return this.$vuex.core.links
   }
 
-  private toggleDrawer(state?: boolean) {
-    return this.$vuex.core.toggleDrawer(state)
+  get tabs() {
+    return this.$vuex.core.tabs
   }
 
-  private onClick(e: MouseEvent, link: any) {
+  async created() {
+    await this.$vuex.core.initialize()
+    this.onResize()
+  }
+
+  onClick(e: MouseEvent, link: any) {
     e.stopPropagation()
     if (link.to || !link.href) return
     this.$vuetify.goTo(link.href)
   }
 
-  public onResize() {
+  onResize() {
     const width = this.$isServer ? 0 : window.innerWidth
     this.maxWidth =
       width > 1904
@@ -54,15 +67,15 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
         : width > 960
         ? '900px'
         : '100%'
+    this.height = (this.$refs.toolbar as Element)?.clientHeight || 0
     this.$vuex.core.setPaginationY(
       (this.$refs.positioning as Element)?.clientHeight || 0
     )
     this.$forceUpdate()
   }
 
-  async created() {
-    await this.$vuex.core.initialize()
-    this.$emit('resize')
+  toggleDrawer(state?: boolean) {
+    return this.$vuex.core.toggleDrawer(state)
   }
 }
 </script>
@@ -71,15 +84,14 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
   <base-container>
     <div
       ref="positioning"
-      :style="{ height: offsetHeight, minHeight: offsetHeight }"
       class="positioning"
+      :style="{ height: offsetHeight, minHeight: offsetHeight }"
     />
-    <div class="toolbar-container" :style="{ minHeight: height }">
+    <div ref="toolbar" class="toolbar-container">
       <v-app-bar
         :fixed="fixed"
         :flat="!fixed"
         :color="color"
-        :height="height"
         :width="maxWidth"
         :style="{
           marginRight: 'auto',
@@ -87,9 +99,22 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
           transition: 'width .2s'
         }"
       >
-        <v-app-bar-nav-icon class="hidden-md-and-up" @click="toggleDrawer" />
-        <v-container mx-auto py-0>
-          <v-row align="center">
+        <v-app-bar-nav-icon class="hidden-md-and-up" @click="toggleDrawer">
+          <hamburger-icon :open="drawerOpen" />
+        </v-app-bar-nav-icon>
+        <v-container ref="firstRow" mx-auto py-0>
+          <v-row class="hidden-md-and-up">
+            <v-spacer />
+            <v-img
+              :src="require('@/assets/logo.png')"
+              contain
+              height="48"
+              width="48"
+              max-width="48"
+              @click="$vuetify.goTo(0)"
+            />
+          </v-row>
+          <v-row align="center" class="hidden-sm-and-down">
             <v-img
               :src="require('@/assets/logo.png')"
               class="mr-5"
@@ -121,6 +146,16 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
             />
           </v-row>
         </v-container>
+        <template v-if="tabs.length" #extension>
+          <v-tabs centered grow flat>
+            <v-tab
+              v-for="({ text }, key) in tabs"
+              :key="key"
+              class="tab text-xs-subtitle-2"
+              >{{ text }}</v-tab
+            >
+          </v-tabs>
+        </template>
       </v-app-bar>
     </div>
   </base-container>

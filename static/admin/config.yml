@@ -7,8 +7,8 @@ backend:
   auth_endpoint: auth
 local_backend: true
 publish_mode: editorial_workflow
-media_folder: '@/static/media'
-public_folder: '@/static/media'
+media_folder: 'static/media'
+public_folder: 'static/media'
 site_url: https://nomad.house
 collections:
   - name: authors
@@ -61,7 +61,7 @@ collections:
         required: false
         hint: A bit about the tag
   - name: recipes
-    label: recipes
+    label: Recipes
     folder: assets/content/recipes
     create: true
     preview_path: '{{slug}}'
@@ -84,14 +84,15 @@ collections:
         widget: relation
         required: true
         collection: authors
-        valueField: slug
+        valueField: name
         searchFields: [name]
         displayFields: [name]
-      - name: category
-        label: Category
+      - name: tags
+        label: Tags
         widget: relation
         multiple: true
-        collection: categories
+        required: false
+        collection: tags
         valueField: name
         searchFields: [name]
         displayFields: [name]
@@ -103,16 +104,101 @@ collections:
       - name: updated
         label: Updated Date
         widget: datetime
+        default: ''
+        required: false
+      - name: description
+        label: Description
+        widget: text
         required: false
       - name: ingredients
         label: Ingredients
         widget: list
         required: true
+        allow_add: true
+        minimize_collapsed: true
+        summary: '{{fields.name}}, {{fields.preparation}} {{fields.options}}'
         fields:
-          - { name: tile
-              label: Title, widget: string, required: true }
-  #   - { name: title, label: Title, widget: string, required: true }
-  #   - { name: subtitle, label: Subtitle, widget: string, required: false }
+          - name: quantities
+            label: Quantities
+            label_singular: Quantity
+            widget: list
+            required: true
+            collapsed: false
+            summary: '{{fields.quantity}} {{fields.label}}'
+            fields:
+              - name: quantity
+                label: Quantity
+                required: true
+                widget: number
+                valueType: float
+                min: 0
+              - name: label
+                label: Quantity Label
+                widget: select
+                required: false
+                options:
+                  [
+                    'tsp',
+                    'tbsp',
+                    'cup',
+                    'pint',
+                    'quart',
+                    'gallon',
+                    'ounce',
+                    'pound',
+                    'mg',
+                    'g',
+                    'kg',
+                    'ml',
+                    'l',
+                    'in',
+                    'ft',
+                    'cm',
+                    'm',
+                    'piece',
+                    'slice',
+                    'can',
+                    'bag',
+                  ]
+          - name: mass
+            label: Mass Equivalent
+            widget: object
+            required: false
+            collapsed: true
+            summary: '{{fields.quantity}} {{fields.label}}'
+            fields:
+              - name: quantity
+                label: Quantity
+                widget: number
+                valueType: float
+                min: 0
+                required: true
+              - name: label
+                label: Quantity Label
+                widget: select
+                required: false
+                options: ['ounce', 'pound', 'mg', 'g', 'kg']
+          - name: name
+            label: Name
+            widget: string
+            required: true
+          - name: preparation
+            label: Preparation
+            widget: string
+            required: false
+          - name: options
+            label: Options
+            widget: select
+            required: false
+            options: ['optional']
+      - name: instructions
+        label: Instructions
+        widget: list
+        required: true
+        allow_add: true
+        minimize_collapsed: true
+        summary: '{{fields.description}}'
+        field: { name: description, label: Description, widget: text }
   - name: posts
     label: Posts
     folder: assets/content/posts

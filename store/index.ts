@@ -10,25 +10,17 @@ export interface FrontMatter<T> {
 }
 
 const setContentType = ({
-  module,
-  type,
-  context,
-  commit
+  context
 }: {
   context: __WebpackModuleApi.RequireContext
-  module: string
-  type: string
-  commit: Commit
 }) => {
-  const items = context
+  return context
     .keys()
     .map((key) => context(key))
     .map((value) => {
       const { attributes } = value as FrontMatter<any>
       return attributes
     })
-  const name = type[0].toUpperCase().concat(type.slice(1))
-  return commit(`${module}/set${name}`, items)
 }
 
 export const actions = {
@@ -42,10 +34,16 @@ export const actions = {
           /\.md$/
         ),
         authors: require.context('@/assets/content/authors', false, /\.md$/)
+      },
+      recipes: {
+        recipes: require.context('@/assets/content/recipes', false, /\.md$/),
+        tags: require.context('@/assets/content/tags', false, /\.md$/)
       }
     }).forEach(([module, types]) => {
       for (const [type, context] of Object.entries(types)) {
-        setContentType({ module, type, context, commit })
+        const items = context ? setContentType({ context }) : []
+        const name = type[0].toUpperCase().concat(type.slice(1))
+        return commit(`${module}/set${name}`, items)
       }
     })
   }

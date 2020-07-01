@@ -27,11 +27,23 @@ export default class Drawer extends Vue {
     this.$vuetify.goTo(link.href)
     this.toggleDrawer(false)
   }
+
+  onTransitionend(open: any) {
+    if (open !== this.drawerOpen) {
+      this.toggleDrawer()
+    }
+  }
 }
 </script>
 
 <template>
-  <v-navigation-drawer :value="drawerOpen" app dark temporary>
+  <v-navigation-drawer
+    app
+    dark
+    temporary
+    :value="drawerOpen"
+    @input="onTransitionend"
+  >
     <v-list>
       <v-list-item
         v-for="(link, i) in links"

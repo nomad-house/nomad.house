@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import {
   mutationTree,
   actionTree,
@@ -12,11 +13,16 @@ export interface Link {
   to: string
 }
 
+export interface Tab extends Link {
+  component: typeof Vue
+}
+
 export const namespaced = true
 
 export const state = () => ({
   drawerOpen: false,
   links: [] as Link[],
+  tabs: [] as Tab[],
   paginationScrollY: 0
 })
 

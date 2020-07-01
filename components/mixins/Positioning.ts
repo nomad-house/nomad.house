@@ -5,6 +5,8 @@ export interface ScrollInfo {
   direction: 'up' | 'down'
 }
 
+export const defaultScrollInfo: ScrollInfo = { position: 0, direction: 'down' }
+
 @Component({})
 export class Positioning extends Vue {
   public lastScrollPosition = 0
