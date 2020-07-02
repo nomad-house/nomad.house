@@ -40,7 +40,7 @@ export default class Layout extends Mixins(Positioning) {
 
 <template>
   <v-app :style="{ position: 'relative', minHeight: '100vh' }">
-    <base-drawer />
+    <base-drawer class="drawer" />
     <div
       ref="hero"
       class="hero-container"
@@ -56,8 +56,7 @@ export default class Layout extends Mixins(Positioning) {
       :scroll-info="scrollInfo"
       :height="toolbarHeight"
       :hero-height="heroHeight"
-      :style="{ zIndex: 20 }"
-      class="relative"
+      class="relative toolbar"
     />
     <base-container class="relative" :style="{ zIndex: 10 }">
       <nuxt :reset-height="resetHeight" />
@@ -75,6 +74,12 @@ export default class Layout extends Mixins(Positioning) {
 <style lang="scss" scoped>
 .relative {
   position: relative;
+}
+.toolbar {
+  z-index: 20;
+}
+.drawer {
+  z-index: 30;
 }
 .hero-container {
   position: fixed;

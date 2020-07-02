@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { mutationTree, getterTree } from 'nuxt-typed-vuex'
+import { Author } from './core'
 
 export const namespaced = true
 
@@ -35,16 +36,9 @@ export interface Tag {
   body?: InstanceType<typeof Vue>
 }
 
-export interface Author {
-  name: string
-  slug: string
-  body?: InstanceType<typeof Vue>
-}
-
 export const state = () => ({
   recipes: [] as Recipe[],
-  tags: [] as Tag[],
-  authors: [] as Author[]
+  tags: [] as Tag[]
 })
 
 export type RecipeState = ReturnType<typeof state>
@@ -72,14 +66,11 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  setRecipes(state, recipes: Recipe[]) {
+  SET_RECIPES(state, recipes: Recipe[]) {
     state.recipes = recipes
   },
-  setTags(state, tags: Tag[]) {
+  SET_TAGS(state, tags: Tag[]) {
     state.tags = tags
-  },
-  setAuthors(state, authors: Author[]) {
-    state.authors = authors
   }
 })
 

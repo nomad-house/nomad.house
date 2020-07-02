@@ -13,7 +13,7 @@ export default class Drawer extends Vue {
   }
 
   toggleDrawer(state?: boolean) {
-    return this.$vuex.core.toggleDrawer(state)
+    return this.$vuex.core.TOGGLE_DRAWER(state)
   }
 
   onClick(e: MouseEvent, link: Link) {
@@ -40,6 +40,7 @@ export default class Drawer extends Vue {
   <v-navigation-drawer
     app
     dark
+    right
     temporary
     :value="drawerOpen"
     @input="onTransitionend"

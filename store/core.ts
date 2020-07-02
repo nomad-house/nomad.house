@@ -17,13 +17,20 @@ export interface Tab extends Link {
   component: typeof Vue
 }
 
+export interface Author {
+  name: string
+  slug: string
+  body?: InstanceType<typeof Vue>
+}
+
 export const namespaced = true
 
 export const state = () => ({
   drawerOpen: false,
   links: [] as Link[],
   tabs: [] as Tab[],
-  paginationScrollY: 0
+  paginationScrollY: 0,
+  authors: [] as Author[]
 })
 
 export type CoreState = ReturnType<typeof state>
@@ -35,13 +42,16 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  toggleDrawer(state, open?: boolean) {
+  TOGGLE_DRAWER(state, open?: boolean) {
     state.drawerOpen = typeof open === 'boolean' ? open : !state.drawerOpen
   },
-  setLinks(state, links: Link[]) {
+  SET_LINKS(state, links: Link[]) {
     state.links = links
   },
-  setPaginationY(state, scrollY: number) {
+  SET_AUTHORS(state, authors: Author[]) {
+    state.authors = authors
+  },
+  SET_VIEWPORT_RESET(state, scrollY: number) {
     state.paginationScrollY = scrollY
   }
 })
@@ -56,7 +66,7 @@ export const actions = actionTree(
         'blog'
       )
       commit(
-        'setLinks',
+        'SET_LINKS',
         blog.topCategories.map((category) => ({
           text: category,
           href: `/${category.toLowerCase()}`,

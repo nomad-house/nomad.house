@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Recipe, Tag, Author, Ingredient } from '../../store/recipes'
+import { Recipe, Tag, Ingredient } from '../../store/recipes'
+import { Author } from '../../store/core'
 import { FrontMatter } from '../../store'
 import RecipeDescription from '@/components/recipe/RecipeDescription.vue'
 import IngredientsList from '@/components/recipe/IngredientsList.vue'

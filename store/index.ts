@@ -16,24 +16,31 @@ const setContentType = ({
 }) => {
   return context
     .keys()
-    .map((key) => context(key))
-    .map((value) => {
+    .map((key) => ({
+      key,
+      value: context(key)
+    }))
+    .map(({ key, value }) => {
+      const [, slug] = /^\.\/(.*)\.(?:md|json)$/.exec(key) || []
+      if (!slug) throw new Error('no slug for ' + key)
       const { attributes } = value as FrontMatter<any>
-      return attributes
+      return { ...attributes, slug }
     })
 }
 
 export const actions = {
   nuxtServerInit({ commit }: { commit: Commit }) {
     Object.entries({
+      core: {
+        authors: require.context('@/assets/content/authors', false, /\.md$/)
+      },
       blog: {
         posts: require.context('@/assets/content/posts', false, /\.md$/),
         categories: require.context(
           '@/assets/content/categories',
           false,
           /\.md$/
-        ),
-        authors: require.context('@/assets/content/authors', false, /\.md$/)
+        )
       },
       recipes: {
         recipes: require.context('@/assets/content/recipes', false, /\.md$/),
@@ -42,8 +49,7 @@ export const actions = {
     }).forEach(([module, types]) => {
       for (const [type, context] of Object.entries(types)) {
         const items = context ? setContentType({ context }) : []
-        const name = type[0].toUpperCase().concat(type.slice(1))
-        return commit(`${module}/set${name}`, items)
+        return commit(`${module}/SET_${type.toUpperCase()}`, items)
       }
     })
   }

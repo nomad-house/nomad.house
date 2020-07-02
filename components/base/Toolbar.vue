@@ -10,6 +10,10 @@ import HamburgerIcon from './HamburgerIcon.vue'
   }
 })
 export default class Toolbar extends Mixins(Positioning, Resize) {
+  height = 0
+  maxWidth = '100%'
+  fixed = false
+
   @Prop({ default: '100vh' }) heroHeight!: string
   @Prop({ default: 'transparent', required: false }) startColor!: string
   @Prop() scrollInfo!: ScrollInfo
@@ -21,10 +25,6 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
       this.fixed = bottom <= 0
     }
   }
-
-  height = 0
-  maxWidth = '100%'
-  fixed = false
 
   get offsetHeight() {
     return `calc(${this.heroHeight} - ${this.height}px)`
@@ -68,14 +68,14 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
         ? '900px'
         : '100%'
     this.height = (this.$refs.toolbar as Element)?.clientHeight || 0
-    this.$vuex.core.setPaginationY(
+    this.$vuex.core.SET_VIEWPORT_RESET(
       (this.$refs.positioning as Element)?.clientHeight || 0
     )
     this.$forceUpdate()
   }
 
   toggleDrawer(state?: boolean) {
-    return this.$vuex.core.toggleDrawer(state)
+    return this.$vuex.core.TOGGLE_DRAWER(state)
   }
 }
 </script>

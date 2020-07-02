@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import { mutationTree, getterTree } from 'nuxt-typed-vuex'
+import { Author } from './core'
 
 export const namespaced = true
 
@@ -7,7 +8,7 @@ export interface Post {
   title: string
   subtitle?: string
   author: Author
-  category: Category[]
+  category: string[]
   hero: string
   published: Date
   updated?: Date
@@ -20,16 +21,10 @@ export interface Category {
   slug: string
   body?: InstanceType<typeof Vue>
 }
-export interface Author {
-  name: string
-  slug: string
-  body?: InstanceType<typeof Vue>
-}
 
 export const state = () => ({
   posts: [] as Post[],
-  categories: [] as Category[],
-  authors: [] as Author[]
+  categories: [] as Category[]
 })
 
 export type BlogState = ReturnType<typeof state>
@@ -39,7 +34,7 @@ export const getters = getterTree(state, {
     const categories = {} as { [slug: string]: number }
 
     for (const { category = [] } of state.posts) {
-      for (const { name } of category) {
+      for (const name of category) {
         if (!categories[name]) categories[name] = 0
         categories[name] += 1
       }
@@ -57,22 +52,10 @@ export const getters = getterTree(state, {
 })
 
 export const mutations = mutationTree(state, {
-  setPosts(state, posts: Post[]) {
+  SET_POSTS(state, posts: Post[]) {
     state.posts = posts
   },
-  setCategories(state, categories: Category[]) {
+  SET_CATEGORIES(state, categories: Category[]) {
     state.categories = categories
-  },
-  setAuthors(state, authors: Author[]) {
-    state.authors = authors
   }
 })
-
-// export const actions = actionTree(
-//   { state, getters, mutations },
-//   {
-//     getPosts({ commit }) {
-//       commit('setPosts', require('@/assets/articles.json'))
-//     }
-//   }
-// )

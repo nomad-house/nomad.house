@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
-import { Post, Author, Category } from '../../store/blog'
+import { Post } from '../../store/blog'
+import { Author } from '../../store/core'
 import { FrontMatter } from '../../store'
 
 @Component({
@@ -32,7 +33,7 @@ export default class BlogPost extends Vue implements Post {
   title!: string
   subtitle?: string
   author!: Author
-  category!: Category[]
+  category!: string[]
   hero!: string
   published!: Date
   updated?: Date
