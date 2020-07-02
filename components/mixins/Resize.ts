@@ -1,7 +1,7 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
-export class Resize extends Vue {
+export default class Resize extends Vue {
   private resizeListner() {
     if (
       Object.prototype.hasOwnProperty.call(this, 'onResize') &&

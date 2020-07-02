@@ -1,11 +1,9 @@
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 import { Ingredient } from '../../store/recipes'
 
 @Component({})
 export default class IngredientsList extends Vue {
-  @Prop({ required: true }) ingredients!: Ingredient[]
-
   getAmount(ingredient: Ingredient): string {
     const amount: string[] = []
     const { quantities, mass } = ingredient
@@ -27,8 +25,12 @@ export default class IngredientsList extends Vue {
     return name.join('')
   }
 
+  get recipe() {
+    return this.$vuex.recipes.activeRecipe
+  }
+
   get sortedList(): Ingredient[] {
-    return this.ingredients.sort((a, b) => {
+    return [...this.recipe.ingredients].sort((a, b) => {
       if (a.options === 'optional' && b.options !== 'optional') return 1
       if (a.options !== 'optional' && b.options === 'optional') return -1
       return 0

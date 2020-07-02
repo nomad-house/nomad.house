@@ -1,18 +1,19 @@
 <script lang="ts">
-import { Component, Vue } from 'vue-property-decorator'
-import { Recipe, Tag, Ingredient } from '../../store/recipes'
-import { Author } from '../../store/core'
+import Vue from 'vue'
+import { Component, Mixins } from 'vue-property-decorator'
+import { Recipe } from '../../store/recipes'
+import { Tab } from '../../store/core'
 import { FrontMatter } from '../../store'
+import Resize from '@/components/mixins/Resize'
 import RecipeDescription from '@/components/recipe/RecipeDescription.vue'
 import IngredientsList from '@/components/recipe/IngredientsList.vue'
 import InstructionsList from '@/components/recipe/InstructionsList.vue'
 
-const tabs = {
-  Description: RecipeDescription,
-  Ingredients: IngredientsList,
-  Instructions: InstructionsList
-}
-type Tab = keyof typeof tabs
+const tabs: Tab[] = [
+  { text: 'Info', component: RecipeDescription as typeof Vue },
+  { text: 'Stuff', component: IngredientsList as typeof Vue },
+  { text: 'Steps', component: InstructionsList as typeof Vue }
+]
 
 @Component({
   layout: 'card',
@@ -21,71 +22,49 @@ type Tab = keyof typeof tabs
     IngredientsList,
     InstructionsList
   },
-  data: (): Recipe => ({
-    title: '',
-    hero: '',
-    author: {
-      name: '',
-      slug: ''
-    },
-    published: new Date(),
-    description: '',
-    ingredients: [],
-    instructions: []
+  data: () => ({
+    recipe: {}
   }),
-  async created(this: RecipeCard) {
+  async created(this: RecipeDetailView) {
+    const slug = this.$route.params.slug
     const recipe: FrontMatter<Recipe> = await import(
-      `@/assets/content/recipes/${this.$route.params.slug}.md`
+      `@/assets/content/recipes/${slug}.md`
     )
-    Object.assign(this, recipe.attributes)
+    this.description = recipe.vue.component
+    this.$vuex.recipes.SET_ACTIVE_RECIPE({
+      slug,
+      ...recipe.attributes
+    })
+    this.$vuex.core.SET_TABS(tabs)
+    this.$vuex.core.SET_ACTIVE_TAB(0)
   }
 })
-export default class RecipeCard extends Vue implements Recipe {
-  tabs = new Map(Object.entries(tabs) as [Tab, typeof Vue][])
-  activeTab: Tab = 'Description'
-  title!: string
-  subtitle?: string
-  hero!: string
-  author!: Author
-  tags?: Tag[]
-  published!: Date
-  updated?: Date
-  description?: string
-  ingredients!: Ingredient[]
-  instructions!: string[]
+export default class RecipeDetailView extends Mixins(Resize) {
+  private description?: InstanceType<typeof Vue>
 
   get showTabs() {
-    return this.$vuetify.breakpoint.smAndDown
+    return this.$vuex.core.tabs.length && this.$vuetify.breakpoint.smAndDown
+  }
+
+  get activeTab() {
+    return this.$vuex.core.activeTab
+  }
+
+  get activeComponent() {
+    return tabs[this.activeTab].component
   }
 }
 </script>
 
 <template>
   <div>
-    <!-- <v-container v-if="showTabs" class="container" pt-0 pb-1 pl-4 pr-4>
-      <v-tabs centered grow flat>
-        <v-tab
-          v-for="([tab], key) in tabs"
-          :key="key"
-          class="tab text-xs-subtitle-2"
-          >{{ tab }}</v-tab
-        >
-      </v-tabs>
-      <v-tabs-items v-model="activeTab">
-        <v-tab-item v-for="([, Component], key) in tabs" :key="key">
-          <component
-            :is="Component"
-            :description="description"
-            :ingredients="ingredients"
-            :instructions="instructions"
-          />
-        </v-tab-item>
-      </v-tabs-items>
+    <v-container v-if="showTabs" class="container" pt-0 pb-1 pl-4 pr-4>
+      <component :is="activeComponent" />
     </v-container>
     <v-container v-if="!showTabs" class="container" pt-0 pb-1 pl-4 pr-4>
-      <ingredients-list :ingredients="ingredients" />
-      <instructions-list :instructions="instructions" />
-    </v-container> -->
+      <ingredients-list />
+      <instructions-list />
+    </v-container>
   </div>
 </template>
 

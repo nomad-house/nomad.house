@@ -8,13 +8,13 @@ import {
 import * as blogModule from './blog'
 
 export interface Link {
-  text: string
-  href: string
-  to: string
+  text?: string
+  href?: string
+  to?: string
 }
 
 export interface Tab extends Link {
-  component: typeof Vue
+  component?: typeof Vue
 }
 
 export interface Author {
@@ -23,21 +23,33 @@ export interface Author {
   body?: InstanceType<typeof Vue>
 }
 
+export interface Hero {
+  heading?: string
+  subHeading?: string
+  img?: string
+}
+
 export const namespaced = true
 
 export const state = () => ({
   drawerOpen: false,
   links: [] as Link[],
   tabs: [] as Tab[],
+  activeTab: 0,
   paginationScrollY: 0,
-  authors: [] as Author[]
+  authors: [] as Author[],
+  hero: {
+    img: 'static/media/recipe_marbled_tea_eggs-1260x600.jpg',
+    heading: 'Spiced Tea Eggs',
+    subHeading: 'A delicious addition to any meal'
+  } as Hero
 })
 
 export type CoreState = ReturnType<typeof state>
 
 export const getters = getterTree(state, {
-  drawerOpen(state) {
-    return state.drawerOpen
+  isHero(state) {
+    return Object.keys(state.hero).length
   }
 })
 
@@ -47,6 +59,12 @@ export const mutations = mutationTree(state, {
   },
   SET_LINKS(state, links: Link[]) {
     state.links = links
+  },
+  SET_TABS(state, tabs: Tab[]) {
+    state.tabs = tabs.map((tab) => ({ ...tab, component: undefined }))
+  },
+  SET_ACTIVE_TAB(state, index: number) {
+    state.activeTab = index
   },
   SET_AUTHORS(state, authors: Author[]) {
     state.authors = authors

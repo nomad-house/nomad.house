@@ -14,13 +14,28 @@ import {
 export default class Layout extends Mixins(Positioning) {
   private toolbarHeight = '72px'
   private scrollInfo: ScrollInfo = defaultScrollInfo
-  private heroHeight = '30vh'
+  private heroHeight = '50vh'
   private resetHeight = 0
+
+  private get isHero() {
+    return this.$vuex.core.isHero
+  }
+
+  private get backgroundImage() {
+    if (this.isHero && this.$vuex.core.hero.img) {
+      const hero = this.$vuex.core.hero.img
+      const img = hero.includes('/') ? hero.split('/').pop() : hero
+      return (
+        'linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/media/' +
+        img +
+        ')'
+      )
+    }
+  }
 
   created() {
     this.$on('scroll', (scrollInfo: ScrollInfo) => {
       this.scrollInfo = scrollInfo
-      this.$emit('scroll', scrollInfo)
     })
   }
 
@@ -32,7 +47,7 @@ export default class Layout extends Mixins(Positioning) {
     this.$off('scroll')
   }
 
-  onScroll(scrollInfo: ScrollInfo) {
+  private onScroll(scrollInfo: ScrollInfo) {
     this.scrollInfo = scrollInfo
   }
 }
@@ -42,14 +57,25 @@ export default class Layout extends Mixins(Positioning) {
   <v-app :style="{ position: 'relative', minHeight: '100vh' }">
     <base-drawer class="drawer" />
     <div
+      v-if="isHero"
       ref="hero"
-      class="hero-container"
+      class="hero-content"
       :style="{
         height: heroHeight,
-        backgroundImage: 'url(' + require('@/static/media/blurcamera.jpg') + ')'
+        backgroundImage
       }"
     >
-      <hero-banner :scroll-info="scrollInfo" />
+      <v-row class="fill-height pa-3" align="center">
+        <v-col cols="12" md="7" offset-md="5">
+          <h1 class="display-3 font-weight-light">
+            {{ $vuex.core.hero.heading }}
+          </h1>
+
+          <h2 class="subheading text-uppercase pl-2 mb-4">
+            {{ $vuex.core.hero.subHeading }}
+          </h2>
+        </v-col>
+      </v-row>
     </div>
     <base-toolbar
       start-color="white"
@@ -81,7 +107,7 @@ export default class Layout extends Mixins(Positioning) {
 .drawer {
   z-index: 30;
 }
-.hero-container {
+.hero-content {
   position: fixed;
   z-index: 0;
   width: 100%;

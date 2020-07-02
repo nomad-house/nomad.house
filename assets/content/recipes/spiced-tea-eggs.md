@@ -1,5 +1,6 @@
 ---
 title: Spiced Tea Eggs
+subtitle: A delicious addition to any meal
 hero: static/media/recipe_marbled_tea_eggs-1260x600.jpg
 author: Matthew Keil
 published: 2020-06-29T15:49:23.056Z

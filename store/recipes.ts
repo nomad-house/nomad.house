@@ -18,6 +18,7 @@ export interface Ingredient {
 }
 
 export interface Recipe {
+  slug: string
   title: string
   subtitle?: string
   hero: string
@@ -25,9 +26,22 @@ export interface Recipe {
   tags?: Tag[]
   published: Date
   updated?: Date
-  description?: string
+  description?: InstanceType<typeof Vue>
   ingredients: Ingredient[]
   instructions: string[]
+}
+
+const defaultRecipe: Recipe = {
+  slug: '',
+  title: '',
+  hero: '',
+  author: {
+    name: '',
+    slug: ''
+  },
+  published: new Date(),
+  ingredients: [],
+  instructions: []
 }
 
 export interface Tag {
@@ -36,12 +50,17 @@ export interface Tag {
   body?: InstanceType<typeof Vue>
 }
 
-export const state = () => ({
+interface RecipeState {
+  activeRecipe: Recipe
+  recipes: Recipe[]
+  tags: Tag[]
+}
+
+export const state = (): RecipeState => ({
+  activeRecipe: defaultRecipe,
   recipes: [] as Recipe[],
   tags: [] as Tag[]
 })
-
-export type RecipeState = ReturnType<typeof state>
 
 export const getters = getterTree(state, {
   topTags(state): string[] {
@@ -68,6 +87,9 @@ export const getters = getterTree(state, {
 export const mutations = mutationTree(state, {
   SET_RECIPES(state, recipes: Recipe[]) {
     state.recipes = recipes
+  },
+  SET_ACTIVE_RECIPE(state, recipe: Recipe) {
+    state.activeRecipe = recipe
   },
   SET_TAGS(state, tags: Tag[]) {
     state.tags = tags

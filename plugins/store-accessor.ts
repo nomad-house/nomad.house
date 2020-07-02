@@ -4,10 +4,12 @@ import { Plugin } from '@nuxt/types'
 
 import * as core from '@/store/core'
 import * as blog from '@/store/blog'
+import * as recipes from '@/store/recipes'
 
 const modules = {
   core,
-  blog
+  blog,
+  recipes
 }
 
 const plugin: Plugin = ({ store }, inject) => {

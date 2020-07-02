@@ -1,16 +1,14 @@
 <script lang="ts">
-import { Component, Vue, Prop } from 'vue-property-decorator'
+import { Component, Vue } from 'vue-property-decorator'
 
 @Component({})
-export default class InstructionsList extends Vue {
-  @Prop({ required: true }) instructions!: string[]
-}
+export default class InstructionsList extends Vue {}
 </script>
 
 <template>
   <v-timeline align-top dense>
     <v-timeline-item
-      v-for="(step, index) of instructions"
+      v-for="(step, index) of $vuex.recipes.activeRecipe.instructions"
       :key="`${index + 1}`"
       fill-dot
     >

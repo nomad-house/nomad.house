@@ -7,7 +7,7 @@ import { Component, Vue } from 'vue-property-decorator'
     BlogAside: () => import('@/components/blog/aside/BlogAside.vue')
   }
 })
-export default class BlogPage extends Vue {}
+export default class RecipeListView extends Vue {}
 </script>
 
 <template>
