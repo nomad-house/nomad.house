@@ -10,6 +10,7 @@ module.exports = {
     'plugin:nuxt/recommended', // goes with plugin
     'plugin:vue/base',
     'plugin:vue/recommended', // from eslint-plugin-vue
+    'plugin:vue/vue3-recommended',
     'prettier', // from eslint-config-prettier
     'prettier/standard', // from eslint-config-prettier
     'prettier/vue' // from eslint-config-prettier

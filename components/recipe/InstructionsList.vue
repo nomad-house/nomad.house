@@ -12,10 +12,10 @@ export default class InstructionsList extends Vue {}
       :key="`${index + 1}`"
       fill-dot
     >
-      <template :slot="'icon'">{{ index + 1 }}</template>
-      <v-card class="elevation 2">
+      <template #icon>{{ index + 1 }}</template>
+      <v-card :id="`step${index + 1}`" class="elevation 2">
         <v-card-text>
-          {{ step }}
+          {{ step.text }}
         </v-card-text>
       </v-card>
     </v-timeline-item>

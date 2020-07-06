@@ -1,11 +1,17 @@
 ---
 title: Spiced Tea Eggs
 subtitle: A delicious addition to any meal
-hero: static/media/recipe_marbled_tea_eggs-1260x600.jpg
+images:
+  - image: static/media/recipe_marbled_tea_eggs-1260x600.jpg
+    aspectRatio: 16x9
 author: Matthew Keil
+tags:
+  - Appetizer
+  - Side Dish
+  - Savory
 published: 2020-06-29T15:49:23.056Z
-updated: ''
-description: The delicious lovelies are wonderful and wonderfully useful!  They
+updated: 2020-07-05T19:24:41.974Z
+description: The delicious lovelies are wonderful and wonderfully useful! They
   are great eaten as a snack or can be eaten in soups, as a side or as the
   protein in a main dish.  They are delish everywhere.
 ingredients:
@@ -104,27 +110,35 @@ ingredients:
         label: tbsp
     name: shaoxing wine
 instructions:
-  - Place eggs in a pot and fill with cold water to cover the eggs.
-  - Cover pot and heat on high util water comes to a full rolling boil.
-  - Open lid slightly, turn down heat to low and simmer for 15 minutes.
-  - "Use the flat side of a knife to crush the red cardamom. Put the spices and
-    2 cups of water in a 2 qt pot. If using Sous Vide, put the water and spices
-    into a cooking pouch and skip the rest of this step. Cover and heat on high
-    until boiling and then simmer until the eggs are peeled.  Note: Use the
-    smallest pot that you can and don't add more water than you need to keep the
-    eggs covered during the steeping process.  The more concentrated the
-    poaching liquid, the better the taste.  If you are cooking a large batch
-    just add more spices in the same ratio and you can make enough for a feast!"
-  - Shock eggs in an ice-water bath and peel (work under the water in the bowl
-    to make it easier to peel).
-  - 'Add the light and dark soy sauce, shoaxing wine and eggs to the spiced
-    water.  Add just enough water to cover. Simmer for a minimum of 4-24 hours.
-    If using Sous Vide cook at 135 degrees for 4-24 hours.  Note: While they are
-    delicious at 4 hours, the flavor is just starting to develop.  I always
-    leave them the full 24 hours. All but one that comes out at about 18 hours
-    because the smell is amazing and I cant wait.'
-  - They store in the refrigerator for several days.  I tend to prefer the
-    flavor best at room temperature or a little warmer and they go great with
-    just about anything you put them with.  Try them on top of Sesame Noodles or
-    floating in a bowl of Hot and Sour Soup.
+  - text: Place eggs in a pot and fill with cold water to cover the eggs.
+  - text: Cover pot and heat on high util water comes to a full rolling boil.
+  - text: Open lid slightly, turn down heat to low and simmer for 15 minutes.
+  - text: >-
+      Use the flat side of a knife to crush the red cardamom. Put the spices and
+      2 cups of water in a 2 qt pot. If using Sous Vide, put the water and spices
+      into a cooking pouch and skip the rest of this step. Cover and heat on high
+      until boiling and then simmer until the eggs are peeled.  Note: Use the
+      smallest pot that you can and don't add more water than you need to keep the
+      eggs covered during the steeping process.  The more concentrated the
+      poaching liquid, the better the taste.  If you are cooking a large batch
+      just add more spices in the same ratio and you can make enough for a feast!
+  - text: >-
+      Shock eggs in an ice-water bath and peel (work under the water in the bowl
+      to make it easier to peel).
+  - text: >-
+      Add the light and dark soy sauce, shoaxing wine and eggs to the spiced
+      water.  Add just enough water to cover. Simmer for a minimum of 4-24 hours.
+      If using Sous Vide cook at 135 degrees for 4-24 hours.  Note: While they are
+      delicious at 4 hours, the flavor is just starting to develop.  I always
+      leave them the full 24 hours. All but one that comes out at about 18 hours
+      because the smell is amazing and I cant wait."
+  - text: >-
+      They store in the refrigerator for several days.  I tend to prefer the
+      flavor best at room temperature or a little warmer and they go great with
+      just about anything you put them with.  Try them on top of Sesame Noodles or
+      floating in a bowl of Hot and Sour Soup.
 ---
+
+The delicious lovelies are wonderful and wonderfully useful!
+
+They are great eaten as a snack or can be eaten in soups, as a side or as the protein in a main dish. They are delish everywhere.

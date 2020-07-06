@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import { mutationTree, getterTree } from 'nuxt-typed-vuex'
-import { Author } from './core'
 
 export const namespaced = true
 
@@ -17,28 +16,71 @@ export interface Ingredient {
   options?: string
 }
 
+export interface Instruction {
+  name?: string
+  text: string
+  beforeImage?: string
+  afterImage?: string
+  tip?: string
+}
+
+export interface Duration {
+  hours: number
+  minutes: number
+}
+
+interface Yield {
+  servings?: number
+  description?: string
+}
+
 export interface Recipe {
   slug: string
   title: string
-  subtitle?: string
-  hero: string
-  author: Author
-  tags?: Tag[]
+  description?: string
+  author: string
   published: Date
   updated?: Date
-  description?: InstanceType<typeof Vue>
+  images: { image: string; aspectRatio: string }[]
+  prepTime?: Duration
+  cookTime?: Duration
+  yield?: Yield
+  categories?: string[]
+  cuisines?: string[]
+  cookingMethods?: string[]
+  tags?: string[]
+  suitableForDiet?: string[]
+  nutrition?: {
+    servingSize?: string
+    calories?: number
+    carbohydrateContent?: number
+    cholesterolContent?: number
+    fatContent?: number
+    fiberContent?: number
+    proteinContent?: number
+    saturatedFatContent?: number
+    sodiumContent?: number
+    sugarContent?: number
+    transFatContent?: number
+    unsaturatedFatContent?: number
+  }
   ingredients: Ingredient[]
-  instructions: string[]
+  instructions: Instruction[]
+  subRecipes?: {
+    title: string
+    description?: string
+    yield?: Yield
+    ingredients: Ingredient[]
+    instructions: Instruction[]
+  }[]
+  body?: InstanceType<typeof Vue>
 }
 
 const defaultRecipe: Recipe = {
   slug: '',
   title: '',
-  hero: '',
-  author: {
-    name: '',
-    slug: ''
-  },
+  images: [],
+  author: '',
   published: new Date(),
   ingredients: [],
   instructions: []
@@ -67,7 +109,7 @@ export const getters = getterTree(state, {
     const top = {} as { [slug: string]: number }
 
     for (const { tags = [] } of state.recipes) {
-      for (const { name } of tags) {
+      for (const name of tags) {
         if (!top[name]) top[name] = 0
         top[name] += 1
       }
@@ -89,7 +131,14 @@ export const mutations = mutationTree(state, {
     state.recipes = recipes
   },
   SET_ACTIVE_RECIPE(state, recipe: Recipe) {
-    state.activeRecipe = recipe
+    const active = { ...recipe }
+    if (typeof recipe.published === 'string') {
+      active.published = new Date(recipe.published)
+    }
+    if (typeof recipe.updated === 'string') {
+      active.updated = new Date(recipe.updated)
+    }
+    state.activeRecipe = active
   },
   SET_TAGS(state, tags: Tag[]) {
     state.tags = tags

@@ -41,7 +41,7 @@ export default class IngredientsList extends Vue {
 
 <template>
   <v-simple-table>
-    <template :slot="'default'">
+    <template #default>
       <thead class="container">
         <tr>
           <th class="amount text-left">Amount</th>

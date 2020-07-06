@@ -27,39 +27,195 @@ collections:
         widget: markdown
         required: false
         hint: The authors bio
-  - name: categories
-    label: Categories
-    label_singular: Category
-    folder: assets/content/categories
+  - name: blogCategories
+    label: Blog Categories
+    label_singular: Blog Category
+    folder: assets/content/blogCategories
     create: true
     slug: '{{slug}}'
-    identified_field: name
     fields:
-      - name: name
-        label: Name
+      - name: title
+        label: Title
         widget: string
         required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
       - name: description
         label: Description
         widget: markdown
         required: false
         hint: A bit about the category
+  - name: recipeCategories
+    label: Recipe Categories
+    label_singular: Recipe Category
+    folder: assets/content/recipeCategories
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the category
+  - name: recipeCuisines
+    label: Recipe Cuisines
+    folder: assets/content/recipeCuisines
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the cuisine
+  - name: cookingTechniques
+    label: Cooking Techniques
+    folder: assets/content/cookingTechniques
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the cooking technique
+  - name: cookingMethods
+    label: Cooking Methods
+    folder: assets/content/cookingMethods
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the cooking method
+  - name: restrictedDiets
+    label: Restricted Diets
+    folder: assets/content/restrictedDiets
+    create: true
+    slug: '{{slug}}'
+    fields:
+      - name: title
+        label: Title
+        widget: string
+        required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
+      - name: description
+        label: Description
+        widget: markdown
+        required: false
+        hint: A bit about the restricted diet
   - name: tags
     label: Tags
     folder: assets/content/tags
     create: true
     slug: '{{slug}}'
-    identified_field: name
     fields:
-      - name: name
-        label: Name
+      - name: title
+        label: Title
         widget: string
         required: true
+      - name: subTitle
+        label: Subtitle
+        widget: string
+        required: false
+      - name: wiki
+        label: Wikipedia Url
+        widget: string
+        required: false
+      - name: resources
+        label: Other Resources
+        widget: list
+        required: false
+        field: { name: url, label: Url, widget: text }
       - name: description
         label: Description
         widget: markdown
         required: false
-        hint: A bit about the tag
+        hint: A bit about the category
   - name: recipes
     label: Recipes
     folder: assets/content/recipes
@@ -71,14 +227,23 @@ collections:
         label: Title
         widget: string
         required: true
-      - name: subtitle
-        label: Subtitle
+      - name: description
+        label: Description
         widget: string
         required: false
-      - name: hero
-        lable: Hero Image
-        widget: image
+      - name: images
+        lable: Images
+        widget: list
         require: true
+        fields:
+          - { name: image, label: Image, widget: image, required: true }
+          - {
+              name: aspectRatio,
+              label: Aspect Ratio,
+              widget: select,
+              required: true,
+              options: ['1X1', '4x3', '16x9'],
+            }
       - name: author
         label: Author
         widget: relation
@@ -86,16 +251,46 @@ collections:
         collection: authors
         valueField: name
         searchFields: [name]
-        displayFields: [name]
+      - name: categories
+        label: Categories
+        widget: relation
+        multiple: true
+        required: false
+        collection: recipeCategories
+        valueField: title
+        searchFields: [title]
+      - name: cuisines
+        label: Cuisines
+        widget: relation
+        multiple: true
+        required: false
+        collection: recipeCuisines
+        valueField: title
+        searchFields: [title]
+      - name: cookingMethods
+        label: Cooking Methods
+        widget: relation
+        multiple: true
+        required: false
+        collection: cookingMethods
+        valueField: title
+        searchFields: [title]
+      - name: suitableForDiet
+        label: Suitable for Restricted Diet
+        widget: relation
+        multiple: true
+        required: false
+        collection: restrictedDiets
+        valueField: title
+        searchFields: [title]
       - name: tags
         label: Tags
         widget: relation
         multiple: true
         required: false
         collection: tags
-        valueField: name
-        searchFields: [name]
-        displayFields: [name]
+        valueField: title
+        searchFields: [title]
       - name: published
         label: Publish Date
         widget: datetime
@@ -106,10 +301,76 @@ collections:
         widget: datetime
         default: ''
         required: false
-      - name: description
-        label: Description
-        widget: text
+      - name: prepTime
+        label: Preparation Time
+        widget: object
         required: false
+        collapsed: true
+        fields:
+          - { name: hours, label: Hours, widget: number, default: 0 }
+          - { name: minutes, label: Miutes, widget: number, default: 0 }
+      - name: cookTime
+        label: Cooking Time
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: hours, label: Hours, widget: number, default: 0 }
+          - { name: minutes, label: Miutes, widget: number, default: 0 }
+      - name: totalTime
+        label: Total Time
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: hours, label: Hours, widget: number, default: 0 }
+          - { name: minutes, label: Miutes, widget: number, default: 0 }
+      - name: nutrition
+        label: Nutritional Information
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: servingSize, label: Serving Size, widget: string }
+          - { name: calories, label: Calories, widget: number }
+          - { name: fatContent, label: Fat Content (g), widget: number }
+          - {
+              name: unsaturatedFatContent,
+              label: Unsaturated Fat Content (g),
+              widget: number,
+            }
+          - {
+              name: saturatedFatContent,
+              label: Saturated Fat Content (g),
+              widget: number,
+            }
+          - {
+              name: transFatContent,
+              label: Trans Fat Content (g),
+              widget: number,
+            }
+          - {
+              name: cholesterolContent,
+              label: Cholesterol Content (mg),
+              widget: number,
+            }
+          - {
+              name: carbohydrateContent,
+              label: Carbohydrate Content (g),
+              widget: number,
+            }
+          - { name: sugarContent, label: Sugar Content (g), widget: number }
+          - { name: fiberContent, label: Fiber Content (g), widget: number }
+          - { name: proteinContent, label: Protein Content (g), widget: number }
+          - { name: sodiumContent, label: Sodium Content (mg), widget: number }
+      - name: yield
+        label: Recipe Yield
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: servings, label: Servings, widget: number }
+          - { name: description, label: Description, widget: string }
       - name: ingredients
         label: Ingredients
         widget: list
@@ -197,8 +458,168 @@ collections:
         required: true
         allow_add: true
         minimize_collapsed: true
-        summary: '{{fields.description}}'
-        field: { name: description, label: Description, widget: text }
+        summary: '{{fields.text}}'
+        fields:
+          - {
+              name: name,
+              label: Name,
+              widget: relation,
+              required: false,
+              collection: cookingTechniques,
+              valueField: title,
+              searchFields: [title],
+            }
+          - { name: text, label: Text, widget: text, required: true }
+          - {
+              name: beforeImage,
+              label: Image Before Step,
+              widget: image,
+              required: false,
+            }
+          - {
+              name: afterImage,
+              label: Image After Step,
+              widget: image,
+              required: false,
+            }
+          - { name: tip, label: Tip, widget: text, required: false }
+      - name: subRecipes
+        label: Sub-Recipes
+        widget: list
+        required: false
+        allow_add: true
+        minimize_collapsed: true
+        summary: '{{fields.title}}'
+        fields:
+          - name: title
+            label: Title
+            widget: string
+            required: true
+          - name: description
+            label: Description
+            widget: string
+            required: false
+          - name: yield
+            label: Recipe Yield
+            widget: object
+            required: false
+            collapsed: true
+            fields:
+              - { name: servings, label: Servings, widget: number }
+              - { name: description, label: Description, widget: string }
+          - name: ingredients
+            label: Ingredients
+            widget: list
+            required: true
+            allow_add: true
+            minimize_collapsed: true
+            summary: '{{fields.name}}, {{fields.preparation}} {{fields.options}}'
+            fields:
+              - name: quantities
+                label: Quantities
+                label_singular: Quantity
+                widget: list
+                required: true
+                collapsed: false
+                summary: '{{fields.quantity}} {{fields.label}}'
+                fields:
+                  - name: quantity
+                    label: Quantity
+                    required: true
+                    widget: number
+                    valueType: float
+                    min: 0
+                  - name: label
+                    label: Quantity Label
+                    widget: select
+                    required: false
+                    options:
+                      [
+                        'tsp',
+                        'tbsp',
+                        'cup',
+                        'pint',
+                        'quart',
+                        'gallon',
+                        'ounce',
+                        'pound',
+                        'mg',
+                        'g',
+                        'kg',
+                        'ml',
+                        'l',
+                        'in',
+                        'ft',
+                        'cm',
+                        'm',
+                        'piece',
+                        'slice',
+                        'can',
+                        'bag',
+                      ]
+              - name: mass
+                label: Mass Equivalent
+                widget: object
+                required: false
+                collapsed: true
+                summary: '{{fields.quantity}} {{fields.label}}'
+                fields:
+                  - name: quantity
+                    label: Quantity
+                    widget: number
+                    valueType: float
+                    min: 0
+                    required: true
+                  - name: label
+                    label: Quantity Label
+                    widget: select
+                    required: false
+                    options: ['ounce', 'pound', 'mg', 'g', 'kg']
+              - name: name
+                label: Name
+                widget: string
+                required: true
+              - name: preparation
+                label: Preparation
+                widget: string
+                required: false
+              - name: options
+                label: Options
+                widget: select
+                required: false
+                options: ['optional']
+          - name: instructions
+            label: Instructions
+            widget: list
+            required: true
+            allow_add: true
+            minimize_collapsed: true
+            summary: '{{fields.text}}'
+            fields:
+              - {
+                  name: name,
+                  label: Name,
+                  widget: relation,
+                  required: false,
+                  collection: cookingTechniques,
+                  valueField: title,
+                  searchFields: [title],
+                }
+              - { name: text, label: Text, widget: text, required: true }
+              - {
+                  name: beforeImage,
+                  label: Image Before Step,
+                  widget: image,
+                  required: false,
+                }
+              - {
+                  name: afterImage,
+                  label: Image After Step,
+                  widget: image,
+                  required: false,
+                }
+              - { name: tip, label: Tip, widget: text, required: false }
+      - { name: body, label: Body, widget: markdown, required: true }
   - name: posts
     label: Posts
     folder: assets/content/posts

@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Watch, Prop, Component, Mixins } from 'vue-property-decorator'
-import { Positioning, ScrollInfo } from '../mixins/Positioning'
+import { ScrollInfo } from '../mixins/Positioning'
 import Resize from '../mixins/Resize'
 import HamburgerIcon from './HamburgerIcon.vue'
 
@@ -9,7 +9,7 @@ import HamburgerIcon from './HamburgerIcon.vue'
     HamburgerIcon
   }
 })
-export default class Toolbar extends Mixins(Positioning, Resize) {
+export default class Toolbar extends Mixins(Resize) {
   height = 0
   maxWidth = '100%'
   fixed = false
@@ -50,7 +50,7 @@ export default class Toolbar extends Mixins(Positioning, Resize) {
     return this.$vuex.core.tabs.length && this.$vuetify.breakpoint.smAndDown
   }
 
-  created() {
+  mounted() {
     this.$vuex.core.initialize()
     this.onResize()
   }

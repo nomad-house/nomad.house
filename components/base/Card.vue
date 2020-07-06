@@ -5,7 +5,7 @@ export default class Card extends Vue {}
 </script>
 
 <template>
-  <v-card flat tile v-bind="$attrs" v-on="$listeners">
+  <v-card flat tile v-bind="$attrs">
     <slot />
   </v-card>
 </template>

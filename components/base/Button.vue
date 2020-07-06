@@ -12,14 +12,7 @@ export default class Button extends Vue {
 </script>
 
 <template>
-  <v-btn
-    :style="styles"
-    color="primary"
-    fab
-    small
-    v-bind="$attrs"
-    v-on="$listeners"
-  >
+  <v-btn :style="styles" color="primary" fab small v-bind="$attrs">
     <slot />
   </v-btn>
 </template>
