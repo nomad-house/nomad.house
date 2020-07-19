@@ -47,4 +47,7 @@ export default class RecipeDescription extends Vue {
 .markdown-recipe-description p {
   color: green;
 }
+.special {
+  color: red;
+}
 </style>

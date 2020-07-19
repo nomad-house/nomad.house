@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["./.serverless_plugins/**/*"],
+  "compilerOptions": {
+    "outDir": ".",
+    "declaration": false,
+    "sourceMap": false
+  }
+}

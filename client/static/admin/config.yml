@@ -2,9 +2,10 @@ backend:
   name: github
   repo: nomad-house/nomad.house
   branch: master
-  site_domain: codeified.org
-  base_url: https://nomad-devops.nomad.house/v1
+  site_domain: nomad.house
+  base_url: https://d515hwec35.execute-api.us-east-1.amazonaws.com/development/admin
   auth_endpoint: auth
+  # open_authoring: true
 local_backend: true
 publish_mode: editorial_workflow
 media_folder: 'static/media'

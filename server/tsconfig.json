@@ -1,0 +1,20 @@
+{
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "lib": ["ESNext", "ESNext.AsyncIterable", "ES2020"],
+    "target": "ES6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": false,
+    "sourceMap": true,
+    "declaration": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "types": ["node"],
+    "outDir": "dist",
+    "typeRoots": ["./node_modules/@types"]
+  }
+}
